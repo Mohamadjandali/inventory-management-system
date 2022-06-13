@@ -25,9 +25,6 @@ export class Product extends BaseEntity {
     @JoinColumn({ name: "inventory_id" })
     inventory: Inventory;
 
-    @ManyToOne(() => Transaction, (transaction) => transaction.products)
-    transaction: Transaction;
-
     @OneToMany(() => Item, (item) => item.product)
     items: Item[];
 }

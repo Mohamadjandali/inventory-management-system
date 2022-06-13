@@ -3,12 +3,9 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToMany,
-    JoinTable,
-    ManyToOne,
     OneToMany,
 } from "typeorm";
-import { Product } from "./Product";
+import { Order } from "./Order";
 
 export enum TransactionTypes {
     BUY = "buy",
@@ -29,12 +26,9 @@ export class Transaction extends BaseEntity {
     })
     type: TransactionTypes;
 
-    @Column({ type: "int" })
-    quantity: number;
-
     @Column({ type: "date" })
     transactionDate: Date;
 
-    @OneToMany(() => Product, (product) => product.transaction)
-    products: Product[];
+    @OneToMany(() => Order, (order) => order.transaction)
+    orders: Order[];
 }

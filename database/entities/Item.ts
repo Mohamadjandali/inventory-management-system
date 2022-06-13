@@ -4,12 +4,13 @@ import {
     Column,
     PrimaryGeneratedColumn,
     ManyToOne,
-    JoinColumn,
+    OneToMany,
 } from "typeorm";
+import { Order } from "./Order";
 import { Product } from "./Product";
 
 @Entity({ name: "items" })
-export class Item {
+export class Item extends BaseEntity {
     @PrimaryGeneratedColumn({ type: "int" })
     id: number;
 
@@ -35,6 +36,8 @@ export class Item {
     totalBalance: number;
 
     @ManyToOne(() => Product, (product) => product.items)
-    @JoinColumn({ name: "product_id" })
     product: Product;
+
+    @OneToMany(() => Order, (order) => order.item)
+    orders: Order[];
 }
