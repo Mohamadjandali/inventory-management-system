@@ -1,34 +1,33 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+    BaseEntity,
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    JoinColumn,
+    OneToMany,
+} from "typeorm";
+import { Inventory } from "./Inventory";
+import { Item } from "./Item";
+import { Transaction } from "./Transaction";
 
-@Entity()
-export class Product {
-    @PrimaryGeneratedColumn()
+@Entity({ name: "products" })
+export class Product extends BaseEntity {
+    @PrimaryGeneratedColumn({ type: "int" })
     id: number;
 
-    @Column({ length: 100 })
+    @Column({ type: "varchar" })
     name: string;
 
-    @Column()
-    code: string;
+    @ManyToOne(() => Inventory, (inventory) => inventory.products, {
+        onDelete: "CASCADE",
+    })
+    @JoinColumn({ name: "inventory_id" })
+    inventory: Inventory;
 
-    @Column()
-    brand: string;
+    @ManyToOne(() => Transaction, (transaction) => transaction.products)
+    transaction: Transaction;
 
-    @Column()
-    inventory_id: number;
-
-    @Column()
-    material: string;
-
-    @Column()
-    quantity: number;
-
-    @Column()
-    measure: string;
-
-    @Column()
-    unit_price: number;
-
-    @Column()
-    total_balance: number;
+    @OneToMany(() => Item, (item) => item.product)
+    items: Item[];
 }
